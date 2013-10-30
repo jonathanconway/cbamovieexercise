@@ -39,10 +39,10 @@
       <HintPath>..\packages\Moq.4.1.1309.1617\lib\net40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="MoviesLibrary">
-      <HintPath>..\packages\MoviesLibrary\MoviesLibrary.dll</HintPath>
+      <HintPath>..\packages\MoviesLibrary.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -71,6 +71,9 @@
       <Project>{3f2b57ab-8833-4555-94e2-ca36e2a11c54}</Project>
       <Name>MoviesService</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
