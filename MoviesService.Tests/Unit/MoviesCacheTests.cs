@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using MoviesLibrary;
 
-namespace MoviesService.Tests
+namespace MoviesService.Tests.Unit
 {
     [TestClass]
     public class MoviesCacheTests

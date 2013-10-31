@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoviesLibrary;
 using System.Linq;
 
-namespace MoviesService.IntegrationTests
+namespace MoviesService.Tests.Integration
 {
     [TestClass]
     public class MovieDataSourceTests
@@ -34,7 +33,8 @@ namespace MoviesService.IntegrationTests
 
             // Assert
             Assert.AreEqual(resultThatShouldBeRetrieved.MovieId, resultById.MovieId);
-            Assert.AreEqual(resultThatShouldBeRetrieved.Cast, resultById.Cast);
+            for (var i = 0; i < resultThatShouldBeRetrieved.Cast.Count(); i++)
+                Assert.AreEqual(resultThatShouldBeRetrieved.Cast[i], resultById.Cast[i]);
             Assert.AreEqual(resultThatShouldBeRetrieved.Classification, resultById.Classification);
             Assert.AreEqual(resultThatShouldBeRetrieved.Genre, resultById.Genre);
             Assert.AreEqual(resultThatShouldBeRetrieved.Rating, resultById.Rating);
@@ -51,7 +51,6 @@ namespace MoviesService.IntegrationTests
             var newMovie = new MovieData
             {
                 Title = "Apocalypse Now",
-                MovieId =  999,
                 Cast = new [] { "Martin Sheen", "Marlon Brando", "Robert Duvall" },
                 Classification = "R",
                 Genre = "Drama",
@@ -64,9 +63,11 @@ namespace MoviesService.IntegrationTests
 
 
             // Assert
-            var testResult = movieDataSource.GetDataById(999);
+            var testResult = movieDataSource.GetDataById(newMovie.MovieId);
             Assert.AreEqual(newMovie.MovieId, testResult.MovieId);
-            Assert.AreEqual(newMovie.Cast, testResult.Cast);
+            Assert.AreEqual(newMovie.Cast[0], testResult.Cast[0]);
+            Assert.AreEqual(newMovie.Cast[1], testResult.Cast[1]);
+            Assert.AreEqual(newMovie.Cast[2], testResult.Cast[2]);
             Assert.AreEqual(newMovie.Classification, testResult.Classification);
             Assert.AreEqual(newMovie.Genre, testResult.Genre);
             Assert.AreEqual(newMovie.Rating, testResult.Rating);
@@ -85,7 +86,6 @@ namespace MoviesService.IntegrationTests
 
             // Act
             movieDataSource.Update(updateMovie);
-
 
             // Assert
             var testResult = movieDataSource.GetDataById(1);

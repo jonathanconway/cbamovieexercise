@@ -1,22 +1,24 @@
-﻿using System.Web.Http;
-using System.Web.Mvc;
-using System.Web.Routing;
+﻿using System;
+using System.Web;
+using Autofac;
+using Autofac.Integration.Wcf;
 
 namespace MoviesService
 {
-    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
-    // visit http://go.microsoft.com/?LinkId=9394801
-
-    public class WebApiApplication : System.Web.HttpApplication
+    public class Global : HttpApplication
     {
-        protected void Application_Start()
+        protected void Application_Start(object sender, EventArgs e)
         {
-            AreaRegistration.RegisterAllAreas();
+            var builder = new ContainerBuilder();
 
-            WebApiConfig.Register(GlobalConfiguration.Configuration);
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            IocConfig.SetupIoc();
+            builder.RegisterType<MoviesService>().AsSelf();
+            builder.RegisterType<MovieDataSourceProxy>().As<IMovieDataSourceProxy>().SingleInstance();
+            builder.RegisterType<MoviesCache>().As<IMoviesCache>().SingleInstance();
+            builder.RegisterType<MoviesRepository>().As<IMoviesRepository>().SingleInstance();
+
+            var container = builder.Build();
+
+            AutofacHostFactory.Container = container;
         }
     }
 }

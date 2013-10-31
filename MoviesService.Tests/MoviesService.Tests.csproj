@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9A32C339-0834-4EAF-9A80-C416F0B0B09F}</ProjectGuid>
+    <ProjectGuid>{6BAFB568-3EE3-4C8F-805F-6B497912BC62}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MoviesService.Tests</RootNamespace>
@@ -59,21 +59,20 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="MoviesCacheTests.cs" />
-    <Compile Include="MoviesRepositoryTests.cs" />
+    <Compile Include="Integration\MovieDataSourceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Unit\MoviesCacheTests.cs" />
+    <Compile Include="Unit\MoviesRepositoryTests.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MoviesService\MoviesService.csproj">
-      <Project>{3f2b57ab-8833-4555-94e2-ca36e2a11c54}</Project>
+      <Project>{d87fdec8-5777-4c07-8eb0-06999f673e0d}</Project>
       <Name>MoviesService</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

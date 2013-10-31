@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Moq;
 using MoviesLibrary;
+using MoviesService.Contracts;
 using NUnit.Framework;
 
-namespace MoviesService.Tests
+namespace MoviesService.Tests.Unit
 {
     [TestFixture]
     public class MoviesRepositoryTests
@@ -48,7 +47,7 @@ namespace MoviesService.Tests
             var moviesRepo = new MoviesRepository(mockMoviesCache.Object, movieDataSourceProxy);
             
             // Act
-            var results = moviesRepo.GetAll("title").ToArray();
+            var results = moviesRepo.GetAll(MovieSortFields.Title).ToArray();
 
             // Assert
             Assert.IsNotNull(results);
@@ -64,21 +63,26 @@ namespace MoviesService.Tests
             var mockMoviesCache = new Mock<IMoviesCache>();
             mockMoviesCache.Setup(x => x.Movies).Returns(new List<MovieData>
             {
-                new MovieData {MovieId = 1, Classification = "G" },
-                new MovieData {MovieId = 2, Classification = "PG" },
-                new MovieData { MovieId = 3, Classification = "PG" }
+                new MovieData { MovieId = 1, Classification = "G" },
+                new MovieData { MovieId = 2, Classification = "PG" },
+                new MovieData { MovieId = 3, Classification = "PG", Cast = new [] { "Jonathan Conway", "Bill Gates" }}
             });
             var movieDataSourceProxy = new Mock<IMovieDataSourceProxy>().Object;
             var moviesRepo = new MoviesRepository(mockMoviesCache.Object, movieDataSourceProxy);
 
             // Act
-            var results = moviesRepo.GetAll(null, new Dictionary<string, string> { { "classification", "PG" } }).ToArray();
+            var results = moviesRepo.GetAll(
+                null, 
+                new Dictionary<MovieFilterFields, string>
+                    {
+                        { MovieFilterFields.Classification, "PG" },
+                        { MovieFilterFields.Cast, "Jonathan Conway" }
+                    }).ToArray();
 
             // Assert
             Assert.IsNotNull(results);
-            Assert.AreEqual(2, results.Count());
-            Assert.AreEqual(2, results[0].MovieId);
-            Assert.AreEqual(3, results[1].MovieId);
+            Assert.AreEqual(1, results.Count());
+            Assert.AreEqual(3, results[0].MovieId);
         }
 
         [Test]
@@ -93,7 +97,7 @@ namespace MoviesService.Tests
             var movieData = new MovieData
                                 {
                                     Title = "Test",
-                                    Cast = new [] {"Jonathan Conway", "Abigail Conway"},
+                                    Cast = new [] {"Jonathan Conway", "Bill Gates"},
                                     Genre = "Horror",
                                     MovieId = 1,
                                     Classification = "R",
